@@ -1,5 +1,4 @@
-# Uso la versión exacta definida en tu package.json
-FROM node:14.15.1
+FROM node:18-alpine
 
 WORKDIR /app
 

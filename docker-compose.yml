@@ -3,7 +3,7 @@ services:
   # --- Frontend ---
   vandvoyage-nodejs-frontend:
     build: ./frontend
-    container_name: vandvoyage-frontend
+    container_name: vandvoyage-nodejs-frontend
     restart: always
     depends_on:
       - vandvoyage-nodejs-backend
@@ -22,7 +22,7 @@ services:
   # --- Backend ---
   vandvoyage-nodejs-backend:
     build: ./backend
-    container_name: vandvoyage-backend
+    container_name: vandvoyage-nodejs-backend
     restart: always
     volumes:
       - /etc/localtime:/etc/localtime:ro
@@ -30,10 +30,10 @@ services:
     environment:
       - TZ=${TZ}
       - PORT=5000
-      - DATABASE_URL=mongodb://${MONGO_ROOT_USERNAME}:${MONGO_ROOT_PASSWORD}@vandvoyage-mongo:27017/${MONGO_DBNAME}?authSource=admin
-      #- DATABASE_NAME=${MONGO_DBNAME}
-      #- DATABASE_USER=${MONGO_ROOT_USERNAME}
-      #- DATABASE_PASSWORD=${MONGO_ROOT_PASSWORD}
+      - DATABASE_URL=vandvoyage-mongo:27017
+      - DATABASE_NAME=${MONGO_DBNAME}
+      - DATABASE_USER=${MONGO_ROOT_USERNAME}
+      - DATABASE_PASSWORD=${MONGO_ROOT_PASSWORD}
     networks:
       - backnet
       - traefik
@@ -50,7 +50,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
-      - mongo-data:/data/db
+      - ./mongo_data:/data/db
     environment:
       - TZ=${TZ}
       - MONGO_ROOT_USERNAME=${MONGO_ROOT_USERNAME}
@@ -62,6 +62,3 @@ networks:
   backnet:
   traefik:
     external: true
-
-volumes:
-  mongo-data:

@@ -1,4 +1,4 @@
-export const endpoint = "export const endpoint = "https://api.vandvoyage.com";";
+export const endpoint = "https://api.vandvoyage.com";
 
 export const HTTP_STATUS = Object.freeze({
     PENDING: "PENDING",

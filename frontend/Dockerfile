@@ -1,16 +1,26 @@
-# Etapa 1: Builder
-FROM node:14.15.1-alpine as builder
+# Etapa 1: Construcción (Builder)
+FROM node:18-alpine as builder
+
 WORKDIR /app
-COPY package*.json ./
-# Instalamos dependencias (usamos --legacy-peer-deps si hay conflictos viejos)
+
+COPY package.json ./
+
+# Instalamos las dependencias normales
 RUN npm install --legacy-peer-deps
+
+# --- PARCHE ---
+# Instalamos explícitamente ajv@8 para corregir el error "Cannot find module 'ajv/dist/compile/codegen'"
+# Esto fuerza a que webpack encuentre la versión moderna que necesita.
+RUN npm install ajv@8
+# --------------
+
 COPY . .
+
+# Ahora sí, compilamos
 RUN npm run build
 
-# Etapa 2: Runner (Nginx)
+# Etapa 2: Servidor Web (Nginx)
 FROM nginx:alpine
 COPY --from=builder /app/build /usr/share/nginx/html
-# Copiamos nuestra config de nginx personalizada
-COPY nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
