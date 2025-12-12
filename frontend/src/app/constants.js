@@ -1,4 +1,4 @@
-export const endpoint = "https://api.vandvoyage.com";
+export const endpoint = process.env.REACT_APP_API_URL || "http://localhost:5001";
 
 export const HTTP_STATUS = Object.freeze({
     PENDING: "PENDING",

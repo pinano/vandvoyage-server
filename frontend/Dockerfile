@@ -16,6 +16,10 @@ RUN npm install ajv@8
 
 COPY . .
 
+# Variable de entorno para la API URL (se pasa en build time)
+ARG REACT_APP_API_URL
+ENV REACT_APP_API_URL=$REACT_APP_API_URL
+
 # Ahora sí, compilamos
 RUN npm run build
 

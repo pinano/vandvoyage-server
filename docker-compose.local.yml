@@ -1,0 +1,31 @@
+services:
+
+  # --- Frontend ---
+  vandvoyage-nodejs-frontend:
+    build:
+      context: ./frontend
+      args:
+        - REACT_APP_API_URL=http://localhost:${BACKEND_PORT}
+    container_name: vandvoyage-nodejs-frontend
+    restart: always
+    depends_on:
+      - vandvoyage-nodejs-backend
+    ports:
+      - "${FRONTEND_PORT}:80"  # Puerto configurable en local -> 80 en contenedor
+    environment:
+      - TZ=${TZ}
+
+  # --- Backend ---
+  vandvoyage-nodejs-backend:
+    build: ./backend
+    container_name: vandvoyage-nodejs-backend
+    restart: always
+    ports:
+      - "${BACKEND_PORT}:5000"  # Puerto configurable -> 5000 interno
+    environment:
+      - TZ=${TZ}
+      - PORT=5000
+      - DATABASE_URL=${DATABASE_URL}
+      - DATABASE_NAME=${DATABASE_NAME}
+      - DATABASE_USER=${DATABASE_USER}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}

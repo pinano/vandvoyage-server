@@ -1,3 +1,4 @@
+import "dotenv/config"; // MUST be first to load environment variables
 import express from "express";
 import cors from "cors";
 import {
@@ -22,7 +23,6 @@ import {
 } from "./router/index.js";
 import "mongoose";
 import "./db/index.js";
-import "dotenv/config";
 
 const port = process.env.PORT || 5000;
 const app = express();
